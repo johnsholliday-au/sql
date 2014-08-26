@@ -1,0 +1,15 @@
+opts=new com.jsh.sql.SQLFmtOptions(
+	debug=!false;
+	fmtError=!true;
+	ll=72;
+)
+
+catparm = new com.jsh.sql.SQLCatlgParm(
+ 	ssid    = "DTAT";
+ 	collid  = "DBA";
+	pkgName = "DBEXPLST";
+	stmtNo  = 468;
+//	stmtNo  = 543;
+	
+	opt     = $opts;
+)

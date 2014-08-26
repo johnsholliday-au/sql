@@ -24,6 +24,7 @@ import com.jsh.sql.JSHSQL.Sc_operatorContext;
 import com.jsh.sql.JSHSQL.Select_clauseContext;
 import com.jsh.sql.JSHSQL.Select_statementContext;
 import com.jsh.sql.JSHSQL.Skip_locked_data_clauseContext;
+import com.jsh.sql.JSHSQL.Unsupported_statementContext;
 import com.jsh.sql.JSHSQL.Update_clauseContext;
 import com.jsh.sql.JSHSQL.Where_clauseContext;
 import com.jsh.sql.JSHSQL.With_clauseContext;
@@ -115,6 +116,12 @@ public class SQLPrintListener
 
 	//-----------------------------------------------------------------
 
+	@Override
+	public void enterUnsupported_statement(Unsupported_statementContext ctx) {
+		String stmt = ctx.getChild(0).getText().toUpperCase();
+		write ("-- "+stmt+" Statement not currently supported by the formatter");
+	}
+	
 	@Override
 	public void enterSc_item(Sc_itemContext ctx) {
 		int len = 0;

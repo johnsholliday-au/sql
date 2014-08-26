@@ -1,0 +1,17 @@
+-- PARAMETER FOR THE BATCH DRIVER   
+-- 1. INPUT STATEMENT               
+INPUT:                              
+CATALOG(   ssid  = DTAT             
+         collid  = DBA              
+        pkgName  = DBEXPLST         
+         stmtNo  = 468  )           
+                                    
+-- 2. FORMATTING OPTIONS            
+Format options:                     
+        LineLen  = 72               
+        debug    = false            
+        fmtError = true             
+                                    
+-- 3. OUTPUT                        
+OUTPUT:                             
+   File "//DD:SQLOUT"               

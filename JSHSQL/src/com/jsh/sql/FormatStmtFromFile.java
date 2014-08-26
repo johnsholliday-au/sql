@@ -27,7 +27,7 @@ public class FormatStmtFromFile {
 				parmFile  = "//DD:SQLPRM";
 			} else {
 				// We're on the Jump Box 
-				inFile    = "Files\\Test Data\\TST_DCL_CSR.txt";
+				inFile    = "Files\\Test Data\\TSTSTMT.txt";
 				outFile   = "Files\\Output\\FormattedSQL.txt";
 				parmFile  = "Files\\Parameters\\fmtParm.txt";
 			}

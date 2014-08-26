@@ -1,8 +1,8 @@
 lexer grammar JSHLexer;
 
-@header {
-package com.jsh.sql;
-}
+//@header {
+//package com.jsh.sql;
+//}
 
 fragment A
 : 'A' | 'a';
@@ -386,7 +386,7 @@ WITHOUT            : W I T H O U T;
 NEXT			         : N E X T;
 PREVIOUS		       : P R E V I O U S;	
 
-/* datatypes */
+/* Key words : datatypes */
 BIGINT             : B I G I N T;
 BINARY             : B I N A R Y;
 BLOB               : B L O B;
@@ -445,7 +445,19 @@ CALLER        : C A L L E R;
 CLIENT        : C L I E N T;  
 POSITIONING   : P O S I T I O N I N G;
 SCROLL        : S C R O L L;
-
+INCLUDE		  : I N C L U D E;	
+DEC			  : D E C;
+NUMERIC		  : N U M E R I C;
+FLOAT		  : F L O A T;
+VARYING		  : V A R Y I N G;
+BIT			  : B I T;
+OVERRIDING    : O V E R R I D I N G;
+ATOMIC		  : A T O M I C;
+SQLEXCEPTION  : S Q L E X C E P T I O N;
+TEMPORARY	  : T E M P O R A R Y;
+DESCRIBE	  : D E S C R I B E;
+EXCHANGE	  : E X C H A N G E;
+SETPATH		  : S E T P A T H;
 
 /* testing  */
 CLAUSE				: C L A U S E;
@@ -468,9 +480,6 @@ QUESTION_MARK	: '?';
 SEMI	: ';';
 
  
-IDENTIFIER
-	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|Digit|'_'|'-')*
-	;
 
 LPAREN		: '(';
 RPAREN		: ')';
@@ -481,6 +490,11 @@ GT        : '>';
 GTE       : '>=';
 LT        : '<';
 LTE       : '<=';
+
+
+IDENTIFIER
+	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|Digit|'_'|'-')*
+	;
  
 fragment
 Digit : '0'..'9';

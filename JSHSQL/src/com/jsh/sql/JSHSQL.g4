@@ -1,8 +1,8 @@
 parser grammar JSHSQL;
 
-@header {
-package com.jsh.sql;
-}
+//@header {
+//package com.jsh.sql;
+//}
 
 options {
 language=Java;
@@ -14,32 +14,622 @@ tokenVocab=JSHLexer;
 }
 
 /********************************************************************************
- *   Start Rule
+ *   Start Rule - a file is one or more statements 
  ********************************************************************************/
 sql_file
-  : select_statement SEMI? (select_statement SEMI)* EOF 
+  : sql_statement SEMI? (sql_statement SEMI)* EOF 
   ;
 
+/********************************************************************************
+ *   A Single SQL statement  
+ ********************************************************************************/
+
 sql_statement
-  : dml_statement
- // | ddl_statement 
- // | dcl_STatement
+  : supported_statement
+  | unsupported_statement 
   ;
-  
-// ddl_statement
-//  :
-//  ;
-//  
-// dcl_statement
-//  :
-//  ; 
-    
- dml_statement
-  : select_statement
+
+supported_statement
+  : delete_statement
+  | insert_statement
+  | update_statement 
+  | select_statement
   | select_into_statement
   | declare_cursor_statement
   ;   
+  
+  
+unsupported_statement	
+: 	 allocate_statement
+	| alter_statement
+	| associate_statement
+	| begin_statement
+	| call_statement
+	| close_statement
+	| comment_statement
+	| commit_statement
+	| connect_statement
+	| create_statement
+	| declare_gtt_statement
+	| declare_stmt_statement
+	| declare_table_statement
+	| declare_variable_statement
+//	| delete_statement
+	| describe_statement
+	| drop_statement
+	| end_statement
+	| exchange_statement
+	| execute_statement
+	| explain_statement
+	| fetch_statement
+	| free_statement
+	| get_statement
+	| grant_statement
+	| hold_statement
+	| include_statement
+//	| insert_statement
+	| label_statement
+	| lock_statement
+	| merge_statement
+	| open_statement
+	| prepare_statement
+	| refresh_statement
+	| release_statement
+	| rename_statement
+	| revoke_statement
+	| rollback_statement
+	| savepoint_statement
+//	| select_statement
+	| set_statement
+	| setpath_statement
+	| signal_statement
+	| truncate_statement
+	| update_statement
+	| values_statement
+	| whenever_statement
+  	;
+  
+/********************************************************************************
+ *   ALLOCATE Statement
+ ********************************************************************************/
+allocate_statement
+	: ALLOCATE token+
+	;
+	 
+/********************************************************************************
+ *   ALTER Statement
+ ********************************************************************************/
+alter_statement
+	: ALTER token+
+	;
+	 
+/********************************************************************************
+ *   ASSOCIATE Statement
+ ********************************************************************************/
+associate_statement
+	: ASSOCIATE token+
+	;
+	 
+/********************************************************************************
+ *   BEGIN Statement
+ ********************************************************************************/
+begin_statement
+	: BEGIN token+
+	;
+	 
+/********************************************************************************
+ *   CALL Statement
+ ********************************************************************************/
+call_statement
+	: CALL token+
+	;
+	 
+/********************************************************************************
+ *   CLOSE Statement
+ ********************************************************************************/
+close_statement
+	: CLOSE token+
+	;
+	 
+/********************************************************************************
+ *   COMMENT Statement
+ ********************************************************************************/
+comment_statement
+	: COMMENT token+
+	;
+	 
+/********************************************************************************
+ *   COMMIT Statement
+ ********************************************************************************/
+commit_statement
+	: COMMIT token+
+	;
+	 
+/********************************************************************************
+ *   CONNECT Statement
+ ********************************************************************************/
+connect_statement
+	: CONNECT token+
+	;
+	 
+/********************************************************************************
+ *   CREATE Statement
+ ********************************************************************************/
+create_statement
+	: CREATE token+
+	;
+	 
+/********************************************************************************
+ *   DECLARE Statement
+ ********************************************************************************/
 
+declare_gtt_statement
+	: DECLARE GLOBAL TEMPORARY TABLE token+
+	;
+declare_stmt_statement
+	: DECLARE STATEMENT token+
+	;
+declare_table_statement
+	: DECLARE TABLE token+
+	;
+declare_variable_statement
+	: DECLARE VARIABLE token+
+	;
+
+	 
+/********************************************************************************
+ *   DESCRIBE Statement
+ ********************************************************************************/
+describe_statement
+	: DESCRIBE token+
+	;
+	 
+/********************************************************************************
+ *   DROP Statement
+ ********************************************************************************/
+drop_statement
+	: DROP token+
+	;
+	 
+/********************************************************************************
+ *   END Statement
+ ********************************************************************************/
+end_statement
+	: END token+
+	;
+	 
+/********************************************************************************
+ *   EXCHANGE Statement
+ ********************************************************************************/
+exchange_statement
+	: EXCHANGE token+
+	;
+	 
+/********************************************************************************
+ *   EXECUTE Statement
+ ********************************************************************************/
+execute_statement
+	: EXECUTE token+
+	;
+	 
+/********************************************************************************
+ *   EXPLAIN Statement
+ ********************************************************************************/
+explain_statement
+	: EXPLAIN token+
+	;
+	 
+/********************************************************************************
+ *   FETCH Statement
+ ********************************************************************************/
+fetch_statement
+	: FETCH token+
+	;
+	 
+/********************************************************************************
+ *   FREE Statement
+ ********************************************************************************/
+free_statement
+	: FREE token+
+	;
+	 
+/********************************************************************************
+ *   GET Statement
+ ********************************************************************************/
+get_statement
+	: GET token+
+	;
+	 
+/********************************************************************************
+ *   GRANT Statement
+ ********************************************************************************/
+grant_statement
+	: GRANT token+
+	;
+	 
+/********************************************************************************
+ *   HOLD Statement
+ ********************************************************************************/
+hold_statement
+	: HOLD token+
+	;
+	 
+/********************************************************************************
+ *   INCLUDE Statement
+ ********************************************************************************/
+include_statement
+	: INCLUDE token+
+	;
+	 
+	 
+/********************************************************************************
+ *   LABEL Statement
+ ********************************************************************************/
+label_statement
+	: LABEL token+
+	;
+	 
+/********************************************************************************
+ *   LOCK Statement
+ ********************************************************************************/
+lock_statement
+	: LOCK token+
+	;
+	 
+/********************************************************************************
+ *   MERGE Statement
+ ********************************************************************************/
+ //??? 
+merge_statement
+	: MERGE STATEMENT
+	;
+	 
+/********************************************************************************
+ *   OPEN Statement
+ ********************************************************************************/
+open_statement
+	: OPEN token+
+	;
+	 
+/********************************************************************************
+ *   PREPARE Statement
+ ********************************************************************************/
+prepare_statement
+	: PREPARE token+
+	;
+	 
+/********************************************************************************
+ *   REFRESH Statement
+ ********************************************************************************/
+refresh_statement
+	: REFRESH token+
+	;
+	 
+/********************************************************************************
+ *   RELEASE Statement
+ ********************************************************************************/
+release_statement
+	: RELEASE token+
+	;
+	 
+/********************************************************************************
+ *   RENAME Statement
+ ********************************************************************************/
+rename_statement
+	: RENAME token+
+	;
+	 
+/********************************************************************************
+ *   REVOKE Statement
+ ********************************************************************************/
+revoke_statement
+	: REVOKE token+
+	;
+	 
+/********************************************************************************
+ *   ROLLBACK Statement
+ ********************************************************************************/
+rollback_statement
+	: ROLLBACK token+
+	;
+	 
+/********************************************************************************
+ *   SAVEPOINT Statement
+ ********************************************************************************/
+savepoint_statement
+	: SAVEPOINT token+
+	;
+	 
+	 
+/********************************************************************************
+ *   SET Statement
+ ********************************************************************************/
+set_statement
+	: SET token+
+	;
+	 
+/********************************************************************************
+ *   SETPATH Statement
+ ********************************************************************************/
+setpath_statement
+	: SETPATH token+
+	;
+	 
+/********************************************************************************
+ *   SIGNAL Statement
+ ********************************************************************************/
+signal_statement
+	: SIGNAL token+
+	;
+	 
+/********************************************************************************
+ *   TRUNCATE Statement
+ ********************************************************************************/
+truncate_statement
+	: TRUNCATE token+
+	;
+	 
+
+	 
+/********************************************************************************
+ *   VALUES Statement
+ ********************************************************************************/
+values_statement
+	: VALUES token+
+	;
+	 
+/********************************************************************************
+ *   WHENEVER Statement
+ ********************************************************************************/
+whenever_statement
+	: WHENEVER token+
+	; 
+  
+  
+  
+  
+
+
+	
+token
+	: identifier
+	| symbol
+	| constant 
+	;
+		
+symbol
+	: CAT
+	| SLASH
+	| PLUS
+	| MINUS
+	| ASTER
+	| COMMA
+	| DOT
+	| COLON
+	| QUESTION_MARK
+	| SEMI
+	| LPAREN
+	| RPAREN
+	| EQUALS
+	| NOTEQ
+	| GT
+	| GTE
+	| LT
+	| LTE
+	;
+
+
+
+/*===============================================================================
+  The SQL DELETE  statement 
+  ===============================================================================*/
+delete_statement
+	: searched_delete_statement
+	| positioned_delete_statement
+	;
+	 
+searched_delete_statement	
+	: sd_delete_clause
+	  include_column_clause?
+	  set_clause?
+	  where_clause? 
+	  isolation_clause?
+	  skip_locked_data_clause?
+	  queryno_clause?
+	;
+	
+	
+	
+sd_delete_clause
+	: DELETE FROM single_table
+	;
+	
+include_column_clause
+	: INCLUDE LPAREN icc_colspec ( COMMA icc_colspec)+ RPAREN
+	;
+	
+icc_colspec 
+	: column_name data_type?
+	;
+		
+set_clause
+	: SET assignment_clause+
+	;		
+
+assignment_clause
+	: single_col_assignment
+	| multi_col_assignment
+	;	
+
+single_col_assignment
+	: column_name EQUALS expression
+	;
+
+multi_col_assignment
+	: LPAREN column_name (COMMA column_name)* RPAREN EQUALS
+	  LPAREN mca_rhs (COMMA mca_rhs)* RPAREN
+	;	
+
+mca_rhs
+	: expression
+	| fullselect
+	;	
+	
+positioned_delete_statement
+	: pd_delete_clause  for_row_clause?
+	
+	;
+
+pd_delete_clause	
+	: DELETE FROM table_name correlation_name WHERE CURRENT OF cursor_name
+	;
+	
+
+
+/*   Data Type */
+
+data_type
+	: built_in_type
+	| distinct_type
+	;
+	
+built_in_type
+	: SMALLINT
+	| INTEGER
+	| INT
+	| BIGINT
+	| DECIMAL (LPAREN integer (COMMA integer)? RPAREN)?
+	| DEC     (LPAREN integer (COMMA integer)? RPAREN)?
+	| NUMERIC (LPAREN integer (COMMA integer)? RPAREN)?
+	| FLOAT   (LPAREN integer RPAREN)?
+	| REAL
+	| DOUBLE PRECISION?
+	| DECFLOAT (LPAREN integer RPAREN)?
+	| CHARACTER (LPAREN integer RPAREN)?
+	| CHAR (LPAREN integer RPAREN)? for_bit_data?
+	| CHARACTER VARYING (LPAREN integer RPAREN) for_bit_data?
+	| CHAR VARYING (LPAREN integer RPAREN) for_bit_data?
+	| VARCHAR 	(LPAREN integer RPAREN) for_bit_data?
+	| GRAPHIC      (LPAREN integer RPAREN)
+	| VARGRAPHIC   (LPAREN integer RPAREN)
+	| BINARY	   (LPAREN integer RPAREN)
+	| BINARY VARYING   (LPAREN integer RPAREN)
+	| VARBINARY	   (LPAREN integer RPAREN)
+	| DATE
+	| TIME
+	| TIMESTAMP (LPAREN integer RPAREN)? tz_spec
+	;
+	
+for_bit_data
+	: FOR BIT DATA
+	;	
+
+tz_spec
+	: WITH TIME ZONE
+	| WITHOUT TIME ZONE
+	;	
+distinct_type
+	: (identifier DOT)? identifier
+	;		
+/*===============================================================================
+  The SQL INSERT  statement 
+  ===============================================================================*/
+insert_statement
+    : insert_clause
+      values_clause
+    ;
+    
+insert_clause        
+    : INSERT INTO table_name 
+      insert_col_list?
+      include_column_clause?
+      overriding_clause?
+    ;
+
+insert_col_list
+	: LPAREN column_name (COMMA column_name)* RPAREN
+	;
+
+overriding_clause
+	: OVERRIDING USER VALUE
+    ;
+
+values_clause
+	: values_fmt1
+	| values_fmt2
+	| values_fmt3
+	| values_fmt4
+	;
+
+values_fmt1
+	: VALUES value_spec
+	;
+
+values_fmt2
+	: VALUES LPAREN value_spec  (COMMA value_spec)* RPAREN
+	;	
+
+values_fmt3
+	: with_clause?
+	  fullselect
+	  isolation_clause?
+	  queryno_clause?
+	 ; 
+	  	
+	  	// multiple row insert
+values_fmt4
+	: VALUES
+	  atomic_clause
+	;	
+	
+mri_spec
+	: expression
+	| variable
+	| DEFAULT 
+	| NULL
+	;	
+
+value_spec
+	: expression 
+	| DEFAULT 
+	| NULL
+	;	
+	
+atomic_clause
+	: ATOMIC
+	| NOT ATOMIC CONTINUE ON SQLEXCEPTION
+	;	
+	
+	
+/*===============================================================================
+  The SQL UPDATE  statement 
+  ===============================================================================*/
+
+update_statement
+    : searched_update_statement
+    | positioned_update_statement
+	;
+
+searched_update_statement
+    : UPDATE single_table
+      include_column_clause?
+      set_clause
+      where_clause?
+      isolation_clause?
+      skip_locked_data_clause?
+      queryno_clause?
+    ;
+    
+positioned_update_statement
+	: UPDATE table_name identifier?
+	 set_clause
+	 WHERE CURRENT OF identifier 
+	for_row_clause?       
+    ;
+        
+for_row_clause
+	: FOR ROW (variable| integer) OF ROWSET
+	;	
 
 /*===============================================================================
   The SQL DECLARE CURSOR statement 
@@ -380,20 +970,7 @@ dctr_fmt4
     : FINAL TABLE dctr_lparen merge_statement dctr_rparen
     ;
 
-insert_statement
-    : INSERT STATEMENT
-    ;
 
-update_statement
-    : UPDATE STATEMENT
-    ;
-delete_statement
-    : DELETE STATEMENT
-    ;
-
-merge_statement
-    : MERGE STATEMENT
-    ;
 
 //joined_table
 //joined_table
@@ -1153,42 +1730,68 @@ id
 	;	
 	
 keyword
-	:ADD
+	:ACCELERATION
+	|ADD
 	|AFTER
+	|AGE
 	|ALL
 	|ALLOCATE
 	|ALLOW
 	|ALTER
 	|AND
 	|ANY
+	|APOST
+	|APPLICATION
 	|AS
+	|ASC
 	|ASENSITIVE
 	|ASSOCIATE
+	|ASTER
 	|ASUTIME
 	|AT
+	|ATOMIC
 	|AUDIT
 	|AUX
 	|AUXILIARY
 	|BEFORE
 	|BEGIN
 	|BETWEEN
+	|BIGINT
+	|BINARY
+	|BINSTRING
+	|BIT
+	|BLOB
 	|BUFFERPOOL
 	|BY
 	|CALL
+	|CALLER
 	|CAPTURE
+	|CARDINALITY
 	|CASCADED
 	|CASE
 	|CAST
+	|CAT
 	|CCSID
+	|CHANGE
 	|CHAR
 	|CHARACTER
 	|CHECK
+	|CLAUSE
+	|CLIENT
+	|CLIENT_ACCTNG
+	|CLIENT_APPLNAME
+	|CLIENT_USERID
+	|CLIENT_WRKSTNNAME
+	|CLOB
 	|CLONE
 	|CLOSE
 	|CLUSTER
+	|COALESCE
 	|COLLECTION
 	|COLLID
+	|COLON
 	|COLUMN
+	|COMMA
 	|COMMENT
 	|COMMIT
 	|CONCAT
@@ -1200,6 +1803,8 @@ keyword
 	|CONTENT
 	|CONTINUE
 	|CREATE
+	|CROSS
+	|CS
 	|CURRENT
 	|CURRENT_DATE
 	|CURRENT_LC_CTYPE
@@ -1210,12 +1815,21 @@ keyword
 	|CURSOR
 	|DATA
 	|DATABASE
+	|DATE
 	|DAY
 	|DAYS
+	|DBCLOB
 	|DBINFO
+	|DEBUG
+	|DEC
+	|DECFLOAT
+	|DECIMAL
+	|DECIMAL_CONSTANT
 	|DECLARE
 	|DEFAULT
+	|DEGREE
 	|DELETE
+	|DESC
 	|DESCRIPTOR
 	|DETERMINISTIC
 	|DISABLE
@@ -1223,6 +1837,7 @@ keyword
 	|DISTINCT
 	|DO
 	|DOCUMENT
+	|DOT
 	|DOUBLE
 	|DROP
 	|DSSIZE
@@ -1235,10 +1850,12 @@ keyword
 	|END
 	|ENDEXEC
 	|ENDING
+	|EQUALS
 	|ERASE
 	|ESCAPE
 	|EXCEPT
 	|EXCEPTION
+	|EXCLUSIVE
 	|EXECUTE
 	|EXISTS
 	|EXIT
@@ -1248,7 +1865,10 @@ keyword
 	|FETCH
 	|FIELDPROC
 	|FINAL
+	|FIRST
+	|FLOAT
 	|FOR
+	|FP_CONSTANT
 	|FREE
 	|FROM
 	|FULL
@@ -1259,26 +1879,42 @@ keyword
 	|GO
 	|GOTO
 	|GRANT
+	|GRAPHIC
 	|GROUP
+	|GSTRING
+	|GT
+	|GTE
 	|HANDLER
 	|HAVING
+	|HEXSTRING
+	|HINT
 	|HOLD
 	|HOUR
 	|HOURS
+	|IDENTIFIER
 	|IF
 	|IMMEDIATE
 	|IN
+	|INCLUDE
 	|INCLUSIVE
 	|INDEX
+	|INDICATOR
+	|INF
+	|INFINITY
 	|INHERIT
 	|INNER
 	|INOUT
+	|INPUT
 	|INSENSITIVE
 	|INSERT
+	|INT
+	|INTEGER
 	|INTERSECT
 	|INTO
+	|INT_CONSTANT
 	|IS
 	|ISOBID
+	|ISOLATION
 	|ITERATE
 	|JAR
 	|JOIN
@@ -1295,30 +1931,47 @@ keyword
 	|LOCATOR
 	|LOCATORS
 	|LOCK
+	|LOCKED
 	|LOCKMAX
+	|LOCKS
 	|LOCKSIZE
 	|LONG
 	|LOOP
+	|LPAREN
+	|LT
+	|LTE
 	|MAINTAINED
 	|MATERIALIZED
+	|MEMBER
+	|MERGE
 	|MICROSECOND
 	|MICROSECONDS
+	|MINUS
 	|MINUTE
 	|MINUTES
+	|MLC
+	|MODE
 	|MODIFIES
 	|MONTH
 	|MONTHS
+	|MULTIPLIER
+	|NAN
+	|NEXT
 	|NEXTVAL
 	|NO
 	|NONE
 	|NOT
+	|NOTEQ
 	|NULL
 	|NULLS
+	|NUMBER
+	|NUMERIC
 	|NUMPARTS
 	|OBID
 	|OF
 	|OLD
 	|ON
+	|ONLY
 	|OPEN
 	|OPTIMIZATION
 	|OPTIMIZE
@@ -1327,19 +1980,26 @@ keyword
 	|ORGANIZATION
 	|OUT
 	|OUTER
+	|OVERRIDING
 	|PACKAGE
+	|PACKAGESET
 	|PADDED
 	|PARAMETER
 	|PART
 	|PARTITION
 	|PARTITIONED
 	|PARTITIONING
+	|PASSING
+	|PASSWORD
 	|PATH
 	|PERIOD
 	|PIECESIZE
 	|PLAN
+	|PLUS
+	|POSITIONING
 	|PRECISION
 	|PREPARE
+	|PREVIOUS
 	|PREVVAL
 	|PRIQTY
 	|PRIVILEGES
@@ -1349,7 +2009,12 @@ keyword
 	|PUBLIC
 	|QUERY
 	|QUERYNO
+	|QUESTION_MARK
+	|QUOTE
+	|READ
 	|READS
+	|REAL
+	|REF
 	|REFERENCES
 	|REFRESH
 	|RELEASE
@@ -1365,6 +2030,7 @@ keyword
 	|RIGHT
 	|ROLE
 	|ROLLBACK
+	|ROUNDING
 	|ROUND_CEILING
 	|ROUND_DOWN
 	|ROUND_FLOOR
@@ -1372,32 +2038,55 @@ keyword
 	|ROUND_HALF_EVEN
 	|ROUND_HALF_UP
 	|ROUND_UP
+	|ROUTINE
 	|ROW
+	|ROWID
+	|ROWS
 	|ROWSET
+	|RPAREN
+	|RR
+	|RS
+	|RULES
 	|RUN
 	|SAVEPOINT
 	|SCHEMA
+	|SCHEME
 	|SCRATCHPAD
+	|SCROLL
 	|SECOND
 	|SECONDS
 	|SECQTY
 	|SECURITY
 	|SELECT
+	|SELECTIVITY
+	|SEMI
 	|SENSITIVE
 	|SEQUENCE
+	|SERVER
+	|SESSION
 	|SESSION_USER
 	|SET
+	|SHARE
 	|SIGNAL
 	|SIMPLE
+	|SKIP
+	|SLASH
+	|SLC
+	|SMALLINT
+	|SNAN
 	|SOME
 	|SOURCE
 	|SPECIFIC
+	|SPECIFICATION
+	|SQLEXCEPTION
+	|SQLID
 	|STANDARD
 	|STATEMENT
 	|STATIC
 	|STAY
 	|STOGROUP
 	|STORES
+	|STRING
 	|STYLE
 	|SUMMARY
 	|SYNONYM
@@ -1408,23 +2097,34 @@ keyword
 	|TABLE
 	|TABLESPACE
 	|THEN
+	|TIME
+	|TIMESTAMP
 	|TO
+	|TOKEN
 	|TRIGGER
 	|TRUNCATE
 	|TYPE
+	|TYPES
 	|UNDO
 	|UNION
 	|UNIQUE
 	|UNTIL
 	|UPDATE
+	|UR
+	|USE
 	|USER
 	|USING
 	|VALIDPROC
 	|VALUE
 	|VALUES
+	|VARBINARY
+	|VARCHAR
+	|VARGRAPHIC
 	|VARIABLE
 	|VARIANT
+	|VARYING
 	|VCAT
+	|VERSION
 	|VIEW
 	|VOLATILE
 	|VOLUMES
@@ -1433,7 +2133,10 @@ keyword
 	|WHERE
 	|WHILE
 	|WITH
+	|WITHOUT
 	|WLM
+	|WS
+	|XML
 	|XMLCAST
 	|XMLEXISTS
 	|XMLNAMESPACES
@@ -1441,4 +2144,3 @@ keyword
 	|YEARS
 	|ZONE
 	;
-

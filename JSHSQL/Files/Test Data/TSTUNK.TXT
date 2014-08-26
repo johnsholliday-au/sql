@@ -1,0 +1,4 @@
+create Table table1 
+( col1 date
+, col2 integer
+)

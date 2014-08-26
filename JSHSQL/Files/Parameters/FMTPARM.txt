@@ -1,0 +1,5 @@
+opts=new com.jsh.sql.SQLFmtOptions(
+	debug=!false;
+	fmtError=!true;
+	ll=72;
+)
