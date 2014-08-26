@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -25,7 +24,7 @@ public class _TSTDriver {
 			// 1. Set up input 
 			//inputFile = "Files\\Test Data\\KAM0031M.txt";
 			//inputFile = "Files\\Test Data\\_Test.txt";
-			inputFile = "Files\\Test Data\\TSTUNK.txt";
+			inputFile = "Files\\Test Data\\TSTERR.txt";
 			is = new FileInputStream(inputFile);
 			ANTLRInputStream input = new ANTLRInputStream(is);
 

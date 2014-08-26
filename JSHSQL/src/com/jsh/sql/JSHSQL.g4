@@ -27,6 +27,7 @@ sql_file
 sql_statement
   : supported_statement
   | unsupported_statement 
+  | invalid_statement
   ;
 
 supported_statement
@@ -38,7 +39,54 @@ supported_statement
   | declare_cursor_statement
   ;   
   
-  
+invalid_statement 
+	: ~(ALLOCATE
+	|ALTER
+	|ASSOCIATE
+	|BEGIN
+	|CALL
+	|CLOSE
+	|COMMENT
+	|COMMIT
+	|CONNECT
+	|CREATE
+	|DECLARE
+	|DELETE
+	|DESCRIBE
+	|DROP
+	|END
+	|EXCHANGE
+	|EXECUTE
+	|EXPLAIN
+	|FETCH
+	|FREE
+	|GET
+	|GRANT
+	|HOLD
+	|INCLUDE
+	|INSERT
+	|LABEL
+	|LOCK
+	|MERGE
+	|OPEN
+	|PREPARE
+	|REFRESH
+	|RELEASE
+	|RENAME
+	|REVOKE
+	|ROLLBACK
+	|SAVEPOINT
+	|SELECT
+	|SET
+	|SETPATH
+	|SIGNAL
+	|TRUNCATE
+	|UPDATE
+	|VALUES
+	|WHENEVER
+	) token+
+   ;
+
 unsupported_statement	
 : 	 allocate_statement
 	| alter_statement
