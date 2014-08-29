@@ -44,7 +44,7 @@ public class _TSTDriver {
 			// 3. Create the parser 
 			System.out.println("3. Create the parser");
 			JSHSQL           parser = new JSHSQL(tokens); 
-			SQLErrorListener    err =  new SQLErrorListener();
+			SQLErrorListener    err = new SQLErrorListener();
 			parser.removeErrorListeners(); 
 			parser.addErrorListener(err);
 

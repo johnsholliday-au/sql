@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class SQLFormatter {
 	
 	SQLFmtOptions opt;
-	String fmtParmFile;
+	//String fmtParmFile;
 
 	public SQLFormatter() {
 		// build default options
