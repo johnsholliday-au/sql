@@ -56,10 +56,19 @@ public class SQLFormatter {
 
 		////////////////////////////////////////////////////////////// 
 		// 4. Walk the parse tree using our custom listener 
-		if (opt.debug()) System.out.println("4. Walk the tree");
-		ParseTreeWalker      walker = new ParseTreeWalker();
-		SQLPrintListener   listener = new SQLPrintListener();
-		walker.walk(listener,  tree);
+		if (opt.debug()) System.out.println("4. Walk the tree (first time to build Annotations)");
+		ParseTreeWalker        walker = new ParseTreeWalker();
+		SQLAnnotateListener alistener = new SQLAnnotateListener();
+		walker.walk(alistener,  tree);
+		if (opt.debug()) System.out.println("   Done..");
+
+		////////////////////////////////////////////////////////////// 
+		// 4. Walk the parse tree using our custom listener 
+		if (opt.debug()) System.out.println("4. Walk the tree (Second time to Format the statement)");
+		//ParseTreeWalker      walker = new ParseTreeWalker();
+		SQLPrintListener   flistener = new SQLPrintListener();
+		flistener.setAnnotations(alistener.getAnnotations());
+		walker.walk(flistener,  tree);
 		if (opt.debug()) System.out.println("   Done..");
 
 		////////////////////////////////////////////////////////////// 
@@ -71,7 +80,7 @@ public class SQLFormatter {
 			else 
 				rv = basicFormat(tokens);
 		else
-			rv = listener.getStmt();
+			rv = flistener.getStmt();
 		if (opt.debug()) System.out.println("   Done..");
 
 

@@ -27,7 +27,7 @@ public class FormatStmtFromFile {
 				parmFile  = "//DD:SQLPRM";
 			} else {
 				// We're on the Jump Box 
-				inFile    = "Files\\Test Data\\TSTSTMT.txt";
+				inFile    = "Files\\Test Data\\_Test.txt";
 				outFile   = "Files\\Output\\FormattedSQL.txt";
 				parmFile  = "Files\\Parameters\\fmtParm.txt";
 			}
@@ -65,7 +65,7 @@ public class FormatStmtFromFile {
 			
 			////////////////////////////////////////////////////////////////////////
 			// 4. read in the SQL statement
-			System.out.println("3.  Create the formatter");
+			System.out.println("4.  Read in the SQL statement");
 			BufferedReader brdr = FileFactory.newBufferedReader(inFile);
 		    String         line = null;
 		    StringBuilder  stringBuilder = new StringBuilder();

@@ -190,7 +190,7 @@ comment_statement
  *   COMMIT Statement
  ********************************************************************************/
 commit_statement
-	: COMMIT token+
+	: COMMIT token*
 	;
 	 
 /********************************************************************************
@@ -215,13 +215,13 @@ declare_gtt_statement
 	: DECLARE GLOBAL TEMPORARY TABLE token+
 	;
 declare_stmt_statement
-	: DECLARE STATEMENT token+
+	: DECLARE identifier (COMMA identifier)* STATEMENT token+
 	;
 declare_table_statement
-	: DECLARE TABLE token+
+	: DECLARE (identifier DOT)? identifier TABLE token+
 	;
 declare_variable_statement
-	: DECLARE VARIABLE token+
+	: DECLARE identifier (COMMA identifier)* VARIABLE token+
 	;
 
 	 
@@ -378,7 +378,7 @@ revoke_statement
  *   ROLLBACK Statement
  ********************************************************************************/
 rollback_statement
-	: ROLLBACK token+
+	: ROLLBACK token*
 	;
 	 
 /********************************************************************************
@@ -486,12 +486,11 @@ searched_delete_statement
 	  queryno_clause?
 	;
 	
-	
-	
 sd_delete_clause
 	: DELETE FROM single_table
 	;
-	
+
+  	
 include_column_clause
 	: INCLUDE LPAREN icc_colspec ( COMMA icc_colspec)+ RPAREN
 	;
@@ -600,7 +599,7 @@ insert_col_list
 
 overriding_clause
 	: OVERRIDING USER VALUE
-    ;
+  ;
 
 values_clause
 	: values_fmt1
@@ -880,7 +879,7 @@ sc_qual
 //    FROM CLAUSE
 ////////////////////////////////////////////////////////////////////////////////
 from_clause
-	: FROM trl+=table_reference (fc_comma trl+=table_reference)*
+	: FROM table_reference (fc_comma table_reference)*
 	;
 
 fc_comma
@@ -893,13 +892,13 @@ table_reference
 	| table_function_reference
 //      implement when INSERT, UPDATE, DELETE and MERGE statements completed      
 	| data_change_table_reference
-//    joined table is left recursive as !!
+//    joined table is left recursive !!
 //	| joined_table
-//    refactored as:  
+//    refactored as:  <<
     | table_reference join_op table_reference join_spec
     | table_reference CROSS JOIN table_reference
     | jt_lparen table_reference jt_rparen
-//  this rule is not as restrictive as the original: ( joined-table )       
+//  this rule is not as restrictive as the original: ( joined-table )     >>  
 	| table_locator_reference
 	| xml_table_expression
 	;	
@@ -1460,16 +1459,36 @@ datetime_constant
  * Function
  ********************************************************************************/
 function_invocation
-	: function_name LPAREN (ALL | DISTINCT)? ((TABLE transition_table_name) | (expression (COMMA expression)*) ) 
+	: function_name fn_lparen (ALL | DISTINCT)? fn_parameter fn_rparen 
 	;
-	
+
+fn_lparen
+  : LPAREN
+  ;
+  
+fn_rparen
+  : RPAREN
+  ;
+  
+fn_parameter
+  : fn_table_parm
+  | fn_expr_list
+  ;
+  
+fn_table_parm
+  : TABLE transition_table_name 
+  ;
+  
+fn_expr_list
+  : expression (COMMA expression)* 
+  ;    	
 	
 transition_table_name
 	:IDENTIFIER
 	;
 
 function_name
-	: IDENTIFIER
+	: id 
 	;
 
 
@@ -1516,10 +1535,10 @@ special_register
 
 
 /************************************************************************************
- *  SEARCH CONDITION snd PREDICATE 
+ *  SEARCH CONDITION and PREDICATE 
  ************************************************************************************/
 search_condition 
-  : sc_not? sc_predfmt1 (sc_operator sc_not? sc_predfmt2)* 
+  : sc_not? sc_predfmt1 (sc_operator sc_not? pl+=sc_predfmt2)* 
   ;
   
 sc_not
@@ -1573,9 +1592,17 @@ predicate
 
 // BASIC PREDICATE
 basic_predicate
-  : expression pred_operator expression
-  | row_value_expression rve_operator row_value_expression  
+  : sv_basic_predicate
+  | rve_basic_predicate 
   ;
+
+sv_basic_predicate
+  : expression pred_operator expression
+  ;
+    
+rve_basic_predicate
+  : row_value_expression rve_operator row_value_expression
+  ;    
 
 // QUANTIFIED PREDICATE
 quantified_predicate
@@ -1768,8 +1795,9 @@ ordinary_identifier
 	:id
 	;
 
+  //QUOTE id QUOTE
 delimited_identifier	
-	: QUOTE id QUOTE
+	: QTESTRING
 	;		
 	
 id
@@ -2058,7 +2086,6 @@ keyword
 	|QUERY
 	|QUERYNO
 	|QUESTION_MARK
-	|QUOTE
 	|READ
 	|READS
 	|REAL

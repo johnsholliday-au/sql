@@ -515,9 +515,12 @@ INFINITY	: I N F I N I T Y;
 
 fragment
 DBLAPOST    : '\'\''; 
+
+fragment
 QUOTE		: '"';
 APOST		: '\'';
 
+QTESTRING : QUOTE .*? QUOTE;
 
 // String Constants
 STRING		: APOST ( DBLAPOST | ~'\'' )* APOST ;

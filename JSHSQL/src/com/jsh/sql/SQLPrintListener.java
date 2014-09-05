@@ -1,17 +1,23 @@
 package com.jsh.sql;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.jsh.sql.JSHSQL.Common_table_expressionContext;
+import com.jsh.sql.JSHSQL.Correlation_clauseContext;
 import com.jsh.sql.JSHSQL.Cte_fullselectContext;
 import com.jsh.sql.JSHSQL.Cursor_specContext;
+import com.jsh.sql.JSHSQL.Fc_commaContext;
 import com.jsh.sql.JSHSQL.Fetch_first_clauseContext;
 import com.jsh.sql.JSHSQL.From_clauseContext;
 import com.jsh.sql.JSHSQL.Fs_operatorContext;
 import com.jsh.sql.JSHSQL.Group_by_clauseContext;
 import com.jsh.sql.JSHSQL.Having_clauseContext;
+import com.jsh.sql.JSHSQL.Insert_col_listContext;
 import com.jsh.sql.JSHSQL.Into_clauseContext;
 import com.jsh.sql.JSHSQL.Invalid_statementContext;
 import com.jsh.sql.JSHSQL.Isolation_clauseContext;
@@ -19,14 +25,17 @@ import com.jsh.sql.JSHSQL.Join_opContext;
 import com.jsh.sql.JSHSQL.Join_specContext;
 import com.jsh.sql.JSHSQL.Optimize_clauseContext;
 import com.jsh.sql.JSHSQL.Order_by_clauseContext;
+import com.jsh.sql.JSHSQL.Pred_operatorContext;
 import com.jsh.sql.JSHSQL.Read_only_clauseContext;
 import com.jsh.sql.JSHSQL.Sc_itemContext;
 import com.jsh.sql.JSHSQL.Sc_operatorContext;
+import com.jsh.sql.JSHSQL.Search_conditionContext;
 import com.jsh.sql.JSHSQL.Select_clauseContext;
 import com.jsh.sql.JSHSQL.Select_statementContext;
 import com.jsh.sql.JSHSQL.Skip_locked_data_clauseContext;
 import com.jsh.sql.JSHSQL.Unsupported_statementContext;
 import com.jsh.sql.JSHSQL.Update_clauseContext;
+import com.jsh.sql.JSHSQL.Values_clauseContext;
 import com.jsh.sql.JSHSQL.Where_clauseContext;
 import com.jsh.sql.JSHSQL.With_clauseContext;
 
@@ -35,6 +44,12 @@ public class SQLPrintListener
 //   implements JSHSQLListener {
      extends JSHSQLBaseListener {
 
+	  ParseTreeProperty<Integer> values = new ParseTreeProperty<Integer>();
+	    
+	    public void setValue(ParseTree node, int value) { values.put(node, value); }
+	    public int getValue(ParseTree node) { return values.get(node); }
+	 
+	    public void setAnnotations(ParseTreeProperty<Integer> values) {this.values=values ;}
 	
 	ArrayList<String> stmt = new ArrayList<String>();
 	
@@ -134,10 +149,11 @@ public class SQLPrintListener
 	@Override
 	public void enterSc_item(Sc_itemContext ctx) {
 		int len = 0;
-		for(int i=0;i<ctx.getChildCount();i++){
+		int i;
+		for(i=0;i<ctx.getChildCount();i++){
 			len+=ctx.getChild(i).getText().length();
 		}
-		if (len + line.length() > ll) {
+		if (len + line.length() + i >= ll) {
 			newline();
 		}
 	}
@@ -186,6 +202,31 @@ public class SQLPrintListener
 	public void exitCommon_table_expression(Common_table_expressionContext ctx) {
 	//	indent -= ctx.cte_tb_identifier().identifier().getText().length() + 2;
 	}	
+
+	@Override
+	public void enterFc_comma(Fc_commaContext ctx) {
+		newline();
+	}	
+	
+//	@Override
+//	public void enterSearch_condition(Search_conditionContext ctx) {
+//		
+//		// loop through the children, and compute the Pred_op pos
+//		int predPos = 0;
+//		for(ParserRuleContext prc : ctx.pl ) {
+//			if (prc instanceof Sc_predfmt1Context) {
+//				predPos = process()
+//			}
+//			if (prc instanceof Sc_predfmt2Context) {
+//				
+//			}
+//		}
+//		
+//		
+//		
+//	}	
+//
+//	int process()
 	
 //	@Override
 //	public void enterCte_tb_identifier(Cte_tb_identifierContext ctx) {
@@ -245,18 +286,37 @@ public class SQLPrintListener
 		indent-=7;
 	}
 
+	
+	//////////////////////////////////////////////////////////////
+	// FROM CLAUSE
+	int corrPos;
+
 	@Override
 	public void enterFrom_clause(From_clauseContext ctx) {
 		newline();
 		write("  ");
+		
 		noSpace=true;
-		indent+=7;
+		indent+=5;
+		corrPos = getValue(ctx);
 	}
 	@Override
 	public void exitFrom_clause(From_clauseContext ctx) {
-		indent-=7;
+		indent-=5;
 	}
 	
+//	@Override
+//	public void enterSingle_table(Single_tableContext ctx) {
+//		
+//	}
+
+	@Override
+	public void enterCorrelation_clause(Correlation_clauseContext ctx) {
+
+		if (line.length() < indent + corrPos + 7)
+		  line.append(space((indent + corrPos + 7) - line.length() ));
+	}
+
 	@Override
 	public void enterWhere_clause(Where_clauseContext ctx) {
 		newline();
@@ -317,6 +377,24 @@ public class SQLPrintListener
 		newline();
 	}
 	
+	int insertColList;
+	@Override
+	public void enterInsert_col_list(Insert_col_listContext ctx) {
+		insertColList = line.length();
+		indent += (insertColList + 2);
+	}
+	
+	@Override
+	public void exitInsert_col_list(Insert_col_listContext ctx) {
+		indent -= (insertColList + 2);
+	}
+
+	@Override
+	public void enterValues_clause(Values_clauseContext ctx) {
+		newline();
+	}
+
+	
 //--------------------------------------------------------------
 	
 	int ji;
@@ -361,7 +439,27 @@ public class SQLPrintListener
 		write("  ");
 	}
 	
+//	-----------------------
+//  Predicates and Search Conditions
+	Stack<Integer> scIndent = new Stack<Integer>();
+	int cscindent;
+	@Override
+	public void enterSearch_condition(Search_conditionContext ctx) {
+		int scindent = getValue(ctx);
+		//push
+		cscindent = scindent; 
+	}
 
+	@Override
+	public void exitSearch_condition(Search_conditionContext ctx) {
+		// pop
+	}
+
+	@Override 
+	public void enterPred_operator(Pred_operatorContext ctx) {
+		if (line.length() < indent + cscindent + 7)
+		  line.append(space((indent + cscindent + 7) - line.length() ));
+	}
 	
 			
 }

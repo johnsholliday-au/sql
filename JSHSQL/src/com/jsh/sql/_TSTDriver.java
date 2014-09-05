@@ -23,8 +23,8 @@ public class _TSTDriver {
 			/////////////////////////////////////////////////////////////////
 			// 1. Set up input 
 			//inputFile = "Files\\Test Data\\KAM0031M.txt";
-			//inputFile = "Files\\Test Data\\_Test.txt";
-			inputFile = "Files\\Test Data\\TSTERR.txt";
+			//inputFile = "Files\\Test Data\\TSTQTE.txt";
+			inputFile = "Files\\Test Data\\_Test.txt";
 			is = new FileInputStream(inputFile);
 			ANTLRInputStream input = new ANTLRInputStream(is);
 
@@ -35,10 +35,10 @@ public class _TSTDriver {
 			CommonTokenStream  tokens = new CommonTokenStream(lexer);
 
 			//      // Display the tokens
-			//        tokens.fill();
-			//        for (Object tok : tokens.getTokens()) {
-			//			System.out.println(tok);
-			//		}
+//			        tokens.fill();
+//			        for (Object tok : tokens.getTokens()) {
+//						System.out.println(tok);
+//					}
 
 			//////////////////////////////////////////////////////////////////
 			// 3. Create the parser 
@@ -52,8 +52,8 @@ public class _TSTDriver {
 			//////////////////////////////////////////////////////////////
 			// Display the tree (in GUI) 
 			// N.B. this consumes the tokens
-			//        parser.sql_statement().inspect(parser);
-			//        if(true) return;
+//			        parser.sql_statement().inspect(parser);
+//			        if(true) return;
 			// N.B don't have to start at the start rule!! 
 			//parser.select_statement().inspect(parser);
 
@@ -64,12 +64,21 @@ public class _TSTDriver {
 
 
 			////////////////////////////////////////////////////////////// 
-			// 5. walk the parse tree (Build SQLStatement Object)
-			System.out.println("5. Walk the tree");
+			// 5.a walk the parse tree 
+			System.out.println("5.a Walk the tree - to annotate");
 
 			ParseTreeWalker        walker = new ParseTreeWalker();
-			SQLPrintListener     listener = new SQLPrintListener();
-			walker.walk(listener,  tree);
+			SQLAnnotateListener alistener = new SQLAnnotateListener();
+			walker.walk(alistener,  tree);
+			
+
+			////////////////////////////////////////////////////////////// 
+			// 5.b walk the parse tree (Build SQLStatement Object)
+			System.out.println("5.b Walk the tree - to format");
+
+			SQLPrintListener     flistener = new SQLPrintListener();
+			flistener.setAnnotations(alistener.getAnnotations());
+			walker.walk(flistener,  tree);
 
 
 
@@ -80,7 +89,7 @@ public class _TSTDriver {
 			if(err.containsErrors()) 
 				stmt = errorFormat(tokens, err); 	
 			else
-				stmt = listener.getStmt();
+				stmt = flistener.getStmt();
 			System.out.println("   Done..");
 
 			//////////////////////////////////////////////////////////////

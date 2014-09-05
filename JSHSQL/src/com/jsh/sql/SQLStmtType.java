@@ -76,7 +76,10 @@ public class SQLStmtType {
 		
 		//String rawStmt = "SELECT * from SYSIBM.SYSTABLES";		
 		//String rawStmt = "SELECT T1.T2.T3, col2 as col \n from XXXX SYSIBM.SYSTABLES";		
-		String rawStmt = "DECLARE C1 Cursor for SELECT * from SYSIBM.SYSTABLES";
+		//String rawStmt = "DECLARE C1 Cursor for SELECT * from SYSIBM.SYSTABLES";
+		String rawStmt = "ROLLBACK";
+		//String rawStmt = "COMMIT";
+		//String rawStmt = "DECLARE xyz TABLE some other stuff";
 		
 		String stmtType = sqltyp.deriveType(rawStmt);
 		
