@@ -1,6 +1,9 @@
-SELECT CHAR ( D_BATCH , ISO ) , CHAR ( D_BATCH - 2 MONTHS , ISO ) , T_BATCH 
-              ^^^^^^^
-no viable alternative at input 'SELECTCHAR(D_BATCH'
+SELECT T1 . CARD , T1 . NPAGES , T1 . PCTPAGES , T1 . RECLENGTH , T2 . NAME , 
+T2 . NTABLES , T2 . NACTIVE , T2 . PARTITIONS , T2 . SEGSIZE , T2 . DBNAME 
+INTO : H , : H , : H , : H , : H , : H , : H , : H , : H , : H 
+ERROR HERE
+^^^^^
+extraneous input 'ERROR' expecting {FROM, ','}
     
-INTO : H , : H , : H 
-FROM SETB_BATCH_DATE
+FROM SYSTABLES T1 , SYSTABLESPACE T2 WHERE T1 . CREATOR = : H AND T1 . NAME = : H 
+AND T2 . NAME = T1 . TSNAME AND T2 . DBNAME = T1 . DBNAME 
